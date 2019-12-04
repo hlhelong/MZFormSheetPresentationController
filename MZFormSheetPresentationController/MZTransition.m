@@ -31,7 +31,7 @@ NSString *const MZPresentationTransitionExceptionMethodNotImplemented = @"MZTran
 CGFloat const MZPresentationTransitionDefaultBounceDuration = 0.4;
 CGFloat const MZPresentationTransitionDefaultDropDownDuration = 0.4;
 
-CGFloat const MZFormSheetPresentationViewControllerDefaultAnimationDuration = 0.35;
+CGFloat const MZFormSheetPresentationViewControllerDefaultAnimationDuration = 0.28;
 
 @implementation MZTransition
 
