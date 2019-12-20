@@ -113,6 +113,11 @@ typedef void(^MZFormSheetPresentationViewControllerCompletionHandler)(UIViewCont
  */
 - (nonnull instancetype)initWithContentViewController:(UIViewController * __nonnull)viewController;
 
+@property (nonatomic, strong) UIPanGestureRecognizer *presentedViewDismissalPanGestureRecognizer;
+
+/** 拖拽结束 */
+@property (nonatomic, copy) dispatch_block_t dragEndBlock;
+
 @end
 
 @interface UIViewController (MZFormSheetPresentationViewController)

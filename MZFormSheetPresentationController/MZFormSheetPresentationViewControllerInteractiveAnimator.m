@@ -220,7 +220,7 @@
         
         CGFloat velocityForSelectedDirection = velocity.y;
         
-        if (fabs(animationRatio) > 0.5 || velocityForSelectedDirection > 300) {
+        if (fabs(animationRatio) > 0.5) {
             [self finishInteractiveTransition];
         } else {
             [self cancelInteractiveTransition];
@@ -295,7 +295,10 @@
         
         
         distanceToPass = CGRectGetHeight(transitionContext.containerView.bounds) - CGRectGetMidY(self.sourceViewInitialFrame);
-        
+        if (distanceToPass * percentComplete <= 0)
+        {
+            return;
+        }
         sourceViewFrame.origin.y = CGRectGetMinY(self.sourceViewInitialFrame) + (distanceToPass * percentComplete);
     }
 

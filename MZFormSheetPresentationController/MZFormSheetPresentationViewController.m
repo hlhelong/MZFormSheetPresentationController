@@ -67,7 +67,6 @@
 @property (nonatomic, strong) UIViewController *contentViewController;
 
 @property (nonatomic, strong) UIPanGestureRecognizer *edgeDismissalPanGestureRecognizer;
-@property (nonatomic, strong) UIPanGestureRecognizer *presentedViewDismissalPanGestureRecognizer;
 @property (nonatomic, assign, getter=isPanGestureRecognized) BOOL panGestureRecognized;
 @end
 
@@ -297,6 +296,9 @@
     } else if (recognizer.state == UIGestureRecognizerStateEnded) {
 
         self.panGestureRecognized = NO;
+        if (self.dragEndBlock) {
+            self.dragEndBlock();
+        }
     }
     
     if (recognizer == self.presentedViewDismissalPanGestureRecognizer) {
