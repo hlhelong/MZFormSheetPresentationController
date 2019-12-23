@@ -199,8 +199,8 @@
     CGPoint location = [recognizer locationInView:viewController.presentationController.containerView];
     CGPoint velocity = [recognizer velocityInView:viewController.presentationController.containerView];
     
-    CGFloat animationRatio = (location.y - self.panGestureRecognizerStartLocation.y) / (self.panGestureRecognizerStartLocation.y + presentingView.frame.size.height/2);
-    CGFloat vAnimationRatio = (location.x - self.panGestureRecognizerStartLocation.x) / (self.panGestureRecognizerStartLocation.x + presentingView.frame.size.width/2);
+    CGFloat animationRatio = (location.y - self.panGestureRecognizerStartLocation.y) / presentingView.frame.size.height;
+    CGFloat vAnimationRatio = (location.x - self.panGestureRecognizerStartLocation.x) / presentingView.frame.size.width;
     
     if (fabs(vAnimationRatio) > fabs(animationRatio)) {
         animationRatio = vAnimationRatio;
@@ -230,7 +230,7 @@
         
         CGFloat velocityForSelectedDirection = velocity.y;
         
-        if (fabs(animationRatio) > 0.5) {
+        if (fabs(animationRatio) > 0.3) {
             [self finishInteractiveTransition];
         } else {
             [self cancelInteractiveTransition];
