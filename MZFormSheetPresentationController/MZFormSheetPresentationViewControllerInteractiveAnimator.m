@@ -202,7 +202,7 @@
     CGFloat animationRatio = (location.y - self.panGestureRecognizerStartLocation.y) / (self.panGestureRecognizerStartLocation.y + presentingView.frame.size.height/2);
     CGFloat vAnimationRatio = (location.x - self.panGestureRecognizerStartLocation.x) / (self.panGestureRecognizerStartLocation.x + presentingView.frame.size.width/2);
     
-    if (vAnimationRatio > animationRatio) {
+    if (fabs(vAnimationRatio) > fabs(animationRatio)) {
         animationRatio = vAnimationRatio;
         self.currentDirection = MZFormSheetPanGestureDismissDirectionRight;
     }
