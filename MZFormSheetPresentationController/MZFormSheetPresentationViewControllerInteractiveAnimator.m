@@ -200,6 +200,16 @@
     CGPoint velocity = [recognizer velocityInView:viewController.presentationController.containerView];
     
     CGFloat animationRatio = (location.y - self.panGestureRecognizerStartLocation.y) / (self.panGestureRecognizerStartLocation.y + presentingView.frame.size.height/2);
+    CGFloat vAnimationRatio = (location.x - self.panGestureRecognizerStartLocation.x) / (self.panGestureRecognizerStartLocation.x + presentingView.frame.size.width/2);
+    
+    if (vAnimationRatio > animationRatio) {
+        animationRatio = vAnimationRatio;
+        self.currentDirection = MZFormSheetPanGestureDismissDirectionRight;
+    }
+    else
+    {
+        self.currentDirection = MZFormSheetPanGestureDismissDirectionDown;
+    }
     
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         if (!CGRectContainsPoint(presentingView.frame, location)) {
@@ -292,14 +302,31 @@
         }
     } else {
         presentationController.backgroundVisibilityPercentage = percentComplete;
-        
-        
-        distanceToPass = CGRectGetHeight(transitionContext.containerView.bounds) - CGRectGetMidY(self.sourceViewInitialFrame);
-        if (distanceToPass * percentComplete <= 0)
+        if (percentComplete <= 0)
         {
             return;
         }
-        sourceViewFrame.origin.y = CGRectGetMinY(self.sourceViewInitialFrame) + (distanceToPass * percentComplete);
+        
+        if (self.currentDirection == MZFormSheetPanGestureDismissDirectionLeft) {
+            distanceToPass = CGRectGetWidth(transitionContext.containerView.bounds) - CGRectGetMinX(self.sourceViewInitialFrame);
+            
+            sourceViewFrame.origin.x = CGRectGetMinX(self.sourceViewInitialFrame) - (distanceToPass * percentComplete);
+            
+        } else if (self.currentDirection == MZFormSheetPanGestureDismissDirectionRight) {
+            distanceToPass = CGRectGetWidth(transitionContext.containerView.bounds) - CGRectGetMinX(self.sourceViewInitialFrame);
+            
+            sourceViewFrame.origin.x = CGRectGetMinX(self.sourceViewInitialFrame) + (distanceToPass * percentComplete);
+            
+        } else if (self.currentDirection == MZFormSheetPanGestureDismissDirectionUp) {
+            distanceToPass = CGRectGetMaxY(self.sourceViewInitialFrame);
+            
+            sourceViewFrame.origin.y = CGRectGetMinY(self.sourceViewInitialFrame) - (distanceToPass * percentComplete);
+            
+        } else if (self.currentDirection == MZFormSheetPanGestureDismissDirectionDown) {
+            distanceToPass = CGRectGetHeight(transitionContext.containerView.bounds) - CGRectGetMinY(self.sourceViewInitialFrame);
+            
+            sourceViewFrame.origin.y = CGRectGetMinY(self.sourceViewInitialFrame) + (distanceToPass * percentComplete);
+        }
     }
 
     sourceView.frame = sourceViewFrame;
@@ -329,9 +356,16 @@
         }
         
     } else {
-        if (CGRectGetMidY(sourceViewFrame) < transitionContext.containerView.frame.size.height/2) {
+        if (self.currentDirection == MZFormSheetPanGestureDismissDirectionLeft) {
+            sourceViewFrame.origin.x = -sourceViewFrame.size.width;
+            
+        } else if (self.currentDirection == MZFormSheetPanGestureDismissDirectionRight) {
+            sourceViewFrame.origin.x = [UIScreen mainScreen].bounds.size.width;
+            
+        } else if (self.currentDirection == MZFormSheetPanGestureDismissDirectionUp) {
             sourceViewFrame.origin.y = -sourceViewFrame.size.height;
-        } else {
+            
+        } else if (self.currentDirection == MZFormSheetPanGestureDismissDirectionDown) {
             sourceViewFrame.origin.y = [UIScreen mainScreen].bounds.size.height;
         }
     }
